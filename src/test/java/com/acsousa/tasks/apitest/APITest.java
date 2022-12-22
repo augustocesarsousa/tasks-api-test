@@ -1,5 +1,10 @@
 package com.acsousa.tasks.apitest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,6 +13,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 public class APITest {
+
+    public String getDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+        return dateFormat.format(Date.from(Instant.now()));
+    }
 
     @BeforeClass
     public static void setup() {
@@ -26,9 +36,10 @@ public class APITest {
 
     @Test
     public void shouldSaveTaskWhenSendingCorrectDatas(){
+        String date = getDate();
         RestAssured
             .given()
-                .body("{\"task\": \"teste RestAssured\",\"dueDate\": \"2022-12-21\"}")
+                .body("{\"task\": \"teste RestAssured\",\"dueDate\": \""+date+"\"}")
                 .contentType(ContentType.JSON)
             .when()
                 .post("/todo")
